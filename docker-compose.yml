@@ -8,7 +8,7 @@ services:
       dockerfile: config/node/Dockerfile
     command: sh -c "npx mikro-orm migration:up && npm run start:${NODE_ENV}"
     env_file:
-      - .env
+      - app/.env
     ports:
       - ${NODE_PORT}:${NODE_PORT}
     depends_on:
@@ -29,8 +29,8 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
 
   nginx:
-    image: nginx:stable-alpine
     container_name: kriptomat-nginx
+    image: nginx:stable-alpine
     environment:
       - NGINX_PORT=${NGINX_PORT}
       - NODE_PORT=${NODE_PORT}
