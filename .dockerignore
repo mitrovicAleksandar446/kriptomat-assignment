@@ -1,0 +1,11 @@
+# Metadata
+.git
+.gitignore
+.dockerignore
+.vscode
+.idea
+
+# Build dependencies
+app/dist
+app/node_modules
+app/coverage

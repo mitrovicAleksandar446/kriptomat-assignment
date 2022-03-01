@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  node:
+    container_name: kriptomat-node
+    build:
+      context: .
+      target: ${NODE_ENV}
+      dockerfile: config/node/Dockerfile
+    command: sh -c "npx mikro-orm migration:up && npm run start:${NODE_ENV}"
+    env_file:
+      - .env
+    ports:
+      - ${NODE_PORT}:${NODE_PORT}
+    depends_on:
+      - postgres
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+
+  postgres:
+    container_name: kriptomat-postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: kriptomat-nginx
+    environment:
+      - NGINX_PORT=${NGINX_PORT}
+      - NODE_PORT=${NODE_PORT}
+    ports:
+      - 80:${NGINX_PORT}
+    volumes:
+      - ./config/nginx/templates:/etc/nginx/templates
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - node
+      - postgres
