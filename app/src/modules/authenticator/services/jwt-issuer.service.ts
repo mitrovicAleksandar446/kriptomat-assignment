@@ -24,6 +24,7 @@ export default class JwtIssuerService {
     return new Promise((resolve, reject) => {
       const jwtSecret = process.env.JWT_SECRET,
         options = { ignoreExpiration: false };
+
       verify(jwt, jwtSecret, options, (err, decode) => {
         if (err) {
           reject(err);

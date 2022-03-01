@@ -2,7 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  NestMiddleware,
+  NestMiddleware, UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import JwtIssuerService from '../../modules/authenticator/services/jwt-issuer.service';
@@ -15,19 +15,19 @@ export class JwtMiddleware implements NestMiddleware {
     const authorizationHeader = req.headers['authorization'];
 
     if (!authorizationHeader) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Unauthorized');
     }
 
     const jwt = authorizationHeader.split(' ')[1];
 
     if (!jwt) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Unauthorized');
     }
 
     try {
       await this.jwtIssuer.verify(jwt);
     } catch (err) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Unauthorized');
     }
 
     next();
