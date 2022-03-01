@@ -4,9 +4,9 @@ services:
     container_name: kriptomat-node
     build:
       context: .
-      target: ${NODE_ENV}
+      target: dev
       dockerfile: config/node/Dockerfile
-    command: sh -c "npx mikro-orm migration:up && npm run start:${NODE_ENV}"
+    command: sh -c "npx mikro-orm migration:up && npm run start:dev"
     env_file:
       - app/.env
     ports:

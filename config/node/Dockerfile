@@ -4,13 +4,11 @@ RUN apk --update add postgresql-client
 
 WORKDIR /app
 
-ENV NODE_ENV=dev
-
 COPY app/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY ./app .
 
 RUN npm run build
 
@@ -23,12 +21,12 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY app/package*.json ./
 
 RUN npm ci --production
 
-COPY . .
+COPY ./app .
 
 COPY --from=dev /app/dist ./dist
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main.js"]
