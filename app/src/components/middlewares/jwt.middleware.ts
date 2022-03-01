@@ -15,19 +15,19 @@ export class JwtMiddleware implements NestMiddleware {
     const authorizationHeader = req.headers['authorization'];
 
     if (!authorizationHeader) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException();
     }
 
     const jwt = authorizationHeader.split(' ')[1];
 
     if (!jwt) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException();
     }
 
     try {
       await this.jwtIssuer.verify(jwt);
     } catch (err) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException();
     }
 
     next();
