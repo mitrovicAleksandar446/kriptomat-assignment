@@ -5,10 +5,7 @@ export default abstract class BaseEntity {
     for (const propertyName of Object.getOwnPropertyNames(payload)) {
       const propertySetterMethodName = this.generateSetterName(propertyName);
 
-      if (
-        !this[propertySetterMethodName] ||
-        typeof this[propertySetterMethodName] !== 'function'
-      )
+      if (!this[propertySetterMethodName] || typeof this[propertySetterMethodName] !== 'function')
         throw new RuntimeException('Property not whitelisted for update');
 
       this[propertySetterMethodName].call(this, payload[propertyName]);

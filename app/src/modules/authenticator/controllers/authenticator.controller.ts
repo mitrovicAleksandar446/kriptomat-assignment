@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseFilters,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseFilters } from '@nestjs/common';
 import { UniqueViolationExceptionFilter } from '../../../components/exception-filters/unique-violation-exception.filter';
 import UserResourceService from '../../user/services/user-resource.service';
 import LoginUserInput from '../inputs/login-user.input';

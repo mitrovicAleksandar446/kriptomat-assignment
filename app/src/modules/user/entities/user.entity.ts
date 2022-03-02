@@ -45,9 +45,7 @@ export class User extends BaseEntity {
 
   public static async buildFrom(userInput: Record<string, any>): Promise<User> {
     const uuid = userInput.uuid || v4();
-    const password = userInput.password
-      ? await hash(userInput.password, 10)
-      : null;
+    const password = userInput.password ? await hash(userInput.password, 10) : null;
 
     return new User(
       uuid,

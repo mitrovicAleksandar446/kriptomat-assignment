@@ -21,9 +21,7 @@ describe('AuthenticatorController', () => {
     userResourceService = module.get<UserResourceService>(UserResourceService);
     jwtIssuerService = module.get<JwtIssuerService>(JwtIssuerService);
 
-    authenticatorController = module.get<AuthenticatorController>(
-      AuthenticatorController,
-    );
+    authenticatorController = module.get<AuthenticatorController>(AuthenticatorController);
   });
 
   describe('#register', () => {
@@ -36,20 +34,16 @@ describe('AuthenticatorController', () => {
       const result = { accessToken: 'jwt' };
       const user = await User.buildFrom(registerUserInput);
 
-      jest
-        .spyOn(jwtIssuerService, 'issueFor')
-        .mockImplementation(() => Promise.resolve('jwt'));
+      jest.spyOn(jwtIssuerService, 'issueFor').mockImplementation(() => Promise.resolve('jwt'));
       jest
         .spyOn(userResourceService, 'persistUser')
         .mockImplementation(() => Promise.resolve(user));
 
-      await expect(
-        authenticatorController.register(registerUserInput),
-      ).resolves.toStrictEqual(result);
-      expect(jwtIssuerService.issueFor).toHaveBeenCalledWith(user);
-      expect(userResourceService.persistUser).toHaveBeenCalledWith(
-        registerUserInput,
+      await expect(authenticatorController.register(registerUserInput)).resolves.toStrictEqual(
+        result,
       );
+      expect(jwtIssuerService.issueFor).toHaveBeenCalledWith(user);
+      expect(userResourceService.persistUser).toHaveBeenCalledWith(registerUserInput);
     });
   });
 
@@ -62,20 +56,14 @@ describe('AuthenticatorController', () => {
       const result = { accessToken: 'jwt' };
       const user = await User.buildFrom(loginUserInput);
 
-      jest
-        .spyOn(jwtIssuerService, 'issueFor')
-        .mockImplementation(() => Promise.resolve('jwt'));
+      jest.spyOn(jwtIssuerService, 'issueFor').mockImplementation(() => Promise.resolve('jwt'));
       jest
         .spyOn(userResourceService, 'findForLoginOrFail')
         .mockImplementation(() => Promise.resolve(user));
 
-      await expect(
-        authenticatorController.login(loginUserInput),
-      ).resolves.toStrictEqual(result);
+      await expect(authenticatorController.login(loginUserInput)).resolves.toStrictEqual(result);
       expect(jwtIssuerService.issueFor).toHaveBeenCalledWith(user);
-      expect(userResourceService.findForLoginOrFail).toHaveBeenCalledWith(
-        loginUserInput,
-      );
+      expect(userResourceService.findForLoginOrFail).toHaveBeenCalledWith(loginUserInput);
     });
   });
 });

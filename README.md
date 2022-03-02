@@ -9,9 +9,10 @@ Simple REST API service for issuing JWT and registering/logging-in users.
 ## Notes
 
 - I have added docker-compose for the dev env and simple build for the production
-- I have not applied Dependency Inversion due to a code scope and to reduce complexity (I have used concrete repository instances in services)
-- I have not covered all the code with unit tests, because pattern was more or less the same or similar
-- I have not used ConfigService (used env variables directly) again, because of the not needed complexity for this project
+- I have not applied Dependency Inversion due to a code scope and to reduce the complexity (I have used concrete repository instances in services)
+- I have not covered all the code with the unit tests, because the pattern was more or less the same or similar
+- I have not used the ConfigService (used env variables directly) again, because of the not needed complexity for this project
+- I have not applied pre-commit hooks (prettier, eslint)
 
 ## Routes
 

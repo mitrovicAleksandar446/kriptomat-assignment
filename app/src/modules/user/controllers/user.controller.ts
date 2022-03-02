@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Patch,
-  UseFilters,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Param, Patch, UseFilters } from '@nestjs/common';
 import BaseResourceController from '../../../components/controllers/base-resource.controller';
 import { UniqueViolationExceptionFilter } from '../../../components/exception-filters/unique-violation-exception.filter';
 import UpdatePasswordInput from '../inputs/update-password.input';
@@ -24,14 +16,8 @@ export default class UserController extends BaseResourceController {
 
   @Patch('/:uuid')
   @UseFilters(new UniqueViolationExceptionFilter('Email is already occupied'))
-  public async update(
-    @Body() updateUserInput: UpdateUserInput,
-    @Param('uuid') uuid: string,
-  ) {
-    const user = await this.userResourceService.updateUser(
-      updateUserInput,
-      uuid,
-    );
+  public async update(@Body() updateUserInput: UpdateUserInput, @Param('uuid') uuid: string) {
+    const user = await this.userResourceService.updateUser(updateUserInput, uuid);
 
     return this.one(user);
   }
@@ -42,10 +28,7 @@ export default class UserController extends BaseResourceController {
     @Body() updatePasswordInput: UpdatePasswordInput,
     @Param('uuid') uuid: string,
   ) {
-    await this.userResourceService.updateUserPassword(
-      updatePasswordInput,
-      uuid,
-    );
+    await this.userResourceService.updateUserPassword(updatePasswordInput, uuid);
   }
 
   protected getResourceName(): string {

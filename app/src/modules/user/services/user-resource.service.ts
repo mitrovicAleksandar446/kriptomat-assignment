@@ -18,9 +18,7 @@ export default class UserResourceService {
     return user;
   }
 
-  public async findForLoginOrFail(
-    loginUserInput: LoginUserInput,
-  ): Promise<User> {
+  public async findForLoginOrFail(loginUserInput: LoginUserInput): Promise<User> {
     const { email, password } = loginUserInput;
     const user = await this.userRepository.findOne({ email });
 
@@ -31,10 +29,7 @@ export default class UserResourceService {
     return user;
   }
 
-  public async updateUser(
-    updateUserInput: UpdateUserInput,
-    uuid: string,
-  ): Promise<User> {
+  public async updateUser(updateUserInput: UpdateUserInput, uuid: string): Promise<User> {
     const user = await this.userRepository.findOne({ uuid });
 
     if (!user) {
@@ -48,10 +43,7 @@ export default class UserResourceService {
     return user;
   }
 
-  async updateUserPassword(
-    updatePasswordInput: UpdatePasswordInput,
-    uuid: string,
-  ): Promise<void> {
+  async updateUserPassword(updatePasswordInput: UpdatePasswordInput, uuid: string): Promise<void> {
     const user = await this.userRepository.findOne({ uuid });
 
     if (!user) {

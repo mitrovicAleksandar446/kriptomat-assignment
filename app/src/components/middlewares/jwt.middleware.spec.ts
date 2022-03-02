@@ -59,9 +59,7 @@ describe('JwtMiddleware', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const next = jest.fn(() => {});
 
-        await expect(jwtMiddleware.use(req, res, next)).rejects.toThrowError(
-          UnauthorizedException,
-        );
+        await expect(jwtMiddleware.use(req, res, next)).rejects.toThrowError(UnauthorizedException);
         expect(next).toHaveBeenCalledTimes(0);
       });
     });

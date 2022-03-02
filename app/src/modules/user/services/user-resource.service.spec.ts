@@ -55,9 +55,9 @@ describe('UserResourceService', () => {
           password: 'test password',
         };
 
-        await expect(
-          userResourceService.persistUser(registerUserInput),
-        ).rejects.toThrowError(UniqueConstraintViolationException);
+        await expect(userResourceService.persistUser(registerUserInput)).rejects.toThrowError(
+          UniqueConstraintViolationException,
+        );
       });
     });
   });
@@ -80,9 +80,7 @@ describe('UserResourceService', () => {
         password: 'test',
       };
 
-      const userFromService = await userResourceService.findForLoginOrFail(
-        loginUserInput,
-      );
+      const userFromService = await userResourceService.findForLoginOrFail(loginUserInput);
       expect(userRepository.findOne).toHaveBeenCalledWith({
         email: user.getEmail(),
       });
@@ -101,9 +99,9 @@ describe('UserResourceService', () => {
           password: 'test',
         };
 
-        await expect(
-          userResourceService.findForLoginOrFail(loginUserInput),
-        ).rejects.toThrowError(HttpException);
+        await expect(userResourceService.findForLoginOrFail(loginUserInput)).rejects.toThrowError(
+          HttpException,
+        );
       });
     });
 
@@ -125,9 +123,9 @@ describe('UserResourceService', () => {
           password: 'test-wrong',
         };
 
-        await expect(
-          userResourceService.findForLoginOrFail(loginUserInput),
-        ).rejects.toThrowError(HttpException);
+        await expect(userResourceService.findForLoginOrFail(loginUserInput)).rejects.toThrowError(
+          HttpException,
+        );
       });
     });
   });
@@ -149,10 +147,7 @@ describe('UserResourceService', () => {
         persistAndFlush: jest.fn(),
       });
 
-      const updatedUser = await userResourceService.updateUser(
-        updateUserInput,
-        user.getUuid(),
-      );
+      const updatedUser = await userResourceService.updateUser(updateUserInput, user.getUuid());
 
       expect(userRepository.findOne).toHaveBeenCalledWith({
         uuid: user.getUuid(),
@@ -173,9 +168,9 @@ describe('UserResourceService', () => {
         const updateUserInput: UpdateUserInput = {};
 
         expect(userRepository.persistAndFlush).toHaveBeenCalledTimes(0);
-        await expect(
-          userResourceService.updateUser(updateUserInput, 'uuid'),
-        ).rejects.toThrowError('User not found');
+        await expect(userResourceService.updateUser(updateUserInput, 'uuid')).rejects.toThrowError(
+          'User not found',
+        );
       });
     });
   });
@@ -199,18 +194,13 @@ describe('UserResourceService', () => {
         oldPassword: 'test',
       };
 
-      await userResourceService.updateUserPassword(
-        updatePasswordInput,
-        user.getUuid(),
-      );
+      await userResourceService.updateUserPassword(updatePasswordInput, user.getUuid());
 
       expect(userRepository.findOne).toHaveBeenCalledWith({
         uuid: user.getUuid(),
       });
       expect(userRepository.persistAndFlush).toHaveBeenCalled();
-      await expect(
-        user.verifyPassword(updatePasswordInput.newPassword),
-      ).resolves.toBe(true);
+      await expect(user.verifyPassword(updatePasswordInput.newPassword)).resolves.toBe(true);
     });
 
     describe('When user is not found', () => {
@@ -253,10 +243,7 @@ describe('UserResourceService', () => {
         };
 
         await expect(
-          userResourceService.updateUserPassword(
-            updatePasswordInput,
-            user.getUuid(),
-          ),
+          userResourceService.updateUserPassword(updatePasswordInput, user.getUuid()),
         ).rejects.toThrowError('Incorrect password');
         expect(userRepository.persistAndFlush).toHaveBeenCalledTimes(0);
         await expect(user.verifyPassword(OLD_PASSWORD)).resolves.toBe(true);

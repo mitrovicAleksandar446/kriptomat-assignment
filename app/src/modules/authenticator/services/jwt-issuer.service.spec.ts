@@ -14,11 +14,10 @@ describe('JwtIssuerService', () => {
       it('should generate a jwt token"', async () => {
         const token = await jwtIssuerService.issueFor({ test: true });
         expect(typeof token).toBe('string');
-        await expect(jwtIssuerService.verify(token)).resolves.toHaveProperty('test')
+        await expect(jwtIssuerService.verify(token)).resolves.toHaveProperty('test');
       });
     });
   });
-
 
   describe('# verify', () => {
     describe('When token is not jwt', () => {
